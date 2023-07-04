@@ -1,8 +1,6 @@
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import './FileUpload.css'
 import axios from 'axios'
+import FileItem from '../FileItem/FileItem';
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
     const uploadHandler = (event) => {
@@ -37,9 +35,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
                 <div className="file-inputs">
                     <input type="file" onChange={uploadHandler} />
                 </div>
-
-                <p className="main">Supported files</p>
-                <p className="info">TXT</p>
 
             </div>
         </>

@@ -1,7 +1,8 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import Button from "@mui/material/Button";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-const FileUpload = ({ files, setFiles }) => {
+const FileUpload = ({ files, setFiles, filename }) => {
   const fileInputRef = useRef(null);
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -9,23 +10,36 @@ const FileUpload = ({ files, setFiles }) => {
   const uploadHandler = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-    file.isUploading = true;
-    setFiles([...files, file]);
+    // const file = event.target.files[0];
+    // if (!file) return;
+    // file.isUploading = true;
+    // setFiles([...files, file]);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileContent = reader.result;
+      setFiles((prevFiles) => [...prevFiles, file]);
+      localStorage.setItem(
+        filename,
+        JSON.stringify({ fileName: file.name, fileContent })
+      );
+    };
+    reader.readAsText(file);
 
     // upload file
-    file.text().then((result) => {
-      localStorage.setItem(
-        "savedFile",
-        JSON.stringify({ fileName: file.name, fileContent: result })
-      );
-    });
+    // file.text().then((result) => {
+    //   localStorage.setItem(
+    //     filename,
+    //     JSON.stringify({ fileName: file.name, fileContent: result })
+    //   );
+    // }, [files]);
   };
 
   return (
     <>
       <div className="file-card">
         <div className="file-inputs">
-          <Button variant="contained" onClick={handleButtonClick}>
+          <Button variant="contained" endIcon={<FileUploadIcon />} onClick={handleButtonClick}>
             Upload File
           </Button>
           <input
@@ -34,7 +48,6 @@ const FileUpload = ({ files, setFiles }) => {
             ref={fileInputRef}
             onChange={uploadHandler}
           />
-          {/* <input type="file" onChange={uploadHandler} /> */}
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import FileUpload from "./FileUpload/FileUpload";
 import Box from "@mui/material/Box";
@@ -8,14 +8,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import GenerateSolutionButton from "./Components/GenerateSolutionButton";
-import HighlightedText from "./Components/HighlightedText";
+import Highlighter from "react-highlight-words";
 
 function App() {
   const [files, setFiles] = useState([]);
   const savedFile = JSON.parse(localStorage.getItem("savedFile"));
   const [files2, setFiles2] = useState([]);
   const savedFile2 = JSON.parse(localStorage.getItem("savedFile2"));
- 
 
   return (
     <div className="App">
@@ -45,8 +44,12 @@ function App() {
 
             <Grid item xs={6}>
               <Box sx={{ width: "80%", height: 200, overflow: "auto" }}>
-                {/* <pre>{savedFile?.fileContent}</pre> */}
-                <HighlightedText text={savedFile?.fileContent} highlight="loc1"/>
+                <pre><Highlighter
+                  highlightClassName="YourHighlightClass"
+                  searchWords={["loc1", "loc2"]}
+                  autoEscape={true}
+                  textToHighlight={savedFile?.fileContent}
+                /></pre>
               </Box>
             </Grid>
             <Grid item xs={6}>
@@ -66,7 +69,13 @@ function App() {
             </Grid>
             <Grid item xs={6}>
               <Box sx={{ width: "80%", height: 200, overflow: "auto" }}>
-                <pre>{savedFile2?.fileContent}</pre>
+              <pre><Highlighter
+                  highlightClassName="YourHighlightClass"
+                  searchWords={["loc1", "loc2"]}
+                  autoEscape={true}
+                  textToHighlight={savedFile2?.fileContent}
+                /></pre>
+                {/* <pre>{savedFile2?.fileContent}</pre> */}
               </Box>
             </Grid>
           </Grid>

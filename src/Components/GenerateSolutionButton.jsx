@@ -38,7 +38,7 @@ export default function GenerateSolutionButton() {
           disabled={loading}
           onClick={handleButtonClick}
         >
-          Generate Solution
+          Check Solvability
         </Button>
         {loading && (
           <CircularProgress

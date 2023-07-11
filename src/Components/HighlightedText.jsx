@@ -1,6 +1,7 @@
 import React from 'react';
 
 const HighlightedText = ({ text, highlight }) => {
+  // const pattern = new RegExp(`(${highlight})`, 'gi');
   const parts = text.split(highlight);
   return (
     <pre>

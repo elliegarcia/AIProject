@@ -46,7 +46,7 @@ function App() {
               <Box sx={{ width: "80%", height: 200, overflow: "auto" }}>
                 <pre><Highlighter
                   highlightClassName="YourHighlightClass"
-                  searchWords={["loc1", "loc2"]}
+                  searchWords={["loc-0", "loc2"]}
                   autoEscape={true}
                   textToHighlight={savedFile?.fileContent}
                 /></pre>

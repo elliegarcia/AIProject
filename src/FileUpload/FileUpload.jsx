@@ -1,49 +1,60 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import './FileUpload.css'
-import axios from 'axios'
+import React, { useRef } from "react";
+import axios from "axios";
+import Button from "@mui/material/Button";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
-const FileUpload = ({ files, setFiles, removeFile }) => {
-    const uploadHandler = (event) => {
-        const file = event.target.files[0];
-        if(!file) return;
-        file.isUploading = true;
-        setFiles([...files, file])
+const FileUpload = ({ files, setFiles }) => {
+  const fileInputRef = useRef(null);
+  
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
 
-        // upload file
-        const formData = new FormData();
-        formData.append(
-            "file",
-            file,
-            file.name
-        )
-        axios.post(`http://localhost:5000/files/:${file.name}`, formData)
-            .then((res) => {
-                file.isUploading = false;
-                setFiles([...files, file])
-            })
-            .catch((err) => {
-                // inform the user
-                console.error(err.files)
-                removeFile(file.name)
-            });
-    }
+  const uploadHandler = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-    return (
-        <>
-            <div className="file-card">
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      // const fileContent = e.target.result;
 
-                <div className="file-inputs">
-                    <input type="file" onChange={uploadHandler} />
-                </div>
+    // upload file
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    axios
+      .post(`http://localhost:5000/files/:${file.name}`, formData)
+      .then((res) => {
+        file.isUploading = false;
+        setFiles([...files, file]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  reader.readAsDataURL(file);
+};
 
-                <p className="main">Supported files</p>
-                <p className="info">TXT</p>
+  return (
+    <>
+      <div className="file-card">
+        <div className="file-inputs">
+          <Button
+            variant="contained"
+            endIcon={<FileUploadIcon />}
+            onClick={handleButtonClick}
+          >
+            Upload File
+          </Button>
+        </div>
+        <input
+          type="file"
+          style={{ display: "none" }}
+          ref={fileInputRef}
+          onChange={uploadHandler}
+        />
+      </div>
+    </>
+  );
+};
 
-            </div>
-        </>
-    )
-}
-
-export default FileUpload
+export default FileUpload;

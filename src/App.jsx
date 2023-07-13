@@ -1,41 +1,35 @@
 import { useState } from "react";
 import "./App.css";
 import FileUpload from "./FileUpload/FileUpload";
-import FileList from "./FileList/FileList";
-import HighlightedText from "./Components/HighlightedText";
 import axios from "axios";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 function App() {
-  const [files, setFiles] = useState([]);
-  const [selectedFile, setSelectedFile] = useState("");
+  const [file, setFile] = useState("");
+  const [fileContent, setFileContent] = useState("");
 
-  const selectFile = (filename) => {
+  const selectFile = () => {
     axios
-      .get(`http://localhost:5000/files/:${filename.name}`)
+      .get(`http://localhost:5000/file/:${file.name}`)
       .then((res) => {
         console.log(res.data);
-        setSelectedFile(res.data);
+        setFileContent(res.data);
       })
       .catch((err) => console.log(err));
   };
-  console.log("selectedfile", selectedFile);
 
-  const removeFile = (filename) => {
-    setFiles(files.filter((file) => file.name !== filename));
-  };
 
   return (
     <div className="App">
       <div className="title">File Uploader</div>
-      <FileUpload files={files} setFiles={setFiles} removeFile={removeFile} />
-      <HighlightedText text={selectedFile} highlight="AI" />
-      
-      <FileList
-        files={files}
-        removeFile={removeFile}
-        selectFile={selectFile}
-        selectedFile={selectedFile}
-      />
+      <FileUpload files={file} setFiles={setFile} />
+      <pre>{fileContent}</pre>
+      <button onClick={selectFile}>Get File Content</button>
     </div>
   );
 }

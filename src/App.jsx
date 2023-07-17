@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./App.css";
 import FileUpload from "./FileUpload/FileUpload";
-import FileList from "./FileList/FileList";
 import HighlightedText from "./Components/HighlightedText";
 import axios from "axios";
 
@@ -29,13 +28,6 @@ function App() {
       <div className="title">File Uploader</div>
       <FileUpload files={files} setFiles={setFiles} removeFile={removeFile} />
       <HighlightedText text={selectedFile} highlight="AI" />
-      
-      <FileList
-        files={files}
-        removeFile={removeFile}
-        selectFile={selectFile}
-        selectedFile={selectedFile}
-      />
     </div>
   );
 }

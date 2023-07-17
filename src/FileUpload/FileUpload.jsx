@@ -5,7 +5,7 @@ import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 const FileUpload = ({ files, setFiles }) => {
   const fileInputRef = useRef(null);
-  
+
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
@@ -16,23 +16,24 @@ const FileUpload = ({ files, setFiles }) => {
 
     const reader = new FileReader();
     reader.onload = function (e) {
-      // const fileContent = e.target.result;
+    const fileContent = e.target.result;
 
-    // upload file
-    const formData = new FormData();
-    formData.append("file", file, file.name);
-    axios
-      .post(`http://localhost:5000/files/:${file.name}`, formData)
-      .then((res) => {
-        file.isUploading = false;
-        setFiles([...files, file]);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      // upload file
+      const formData = new FormData();
+      formData.append("file", file, file.name, fileContent);
+      axios
+        .post(`http://localhost:5000/files/:${file.name}`, formData)
+        .then((res) => {
+          file.isUploading = false;
+          setFiles([...files, file]);
+          console.log("postedFile", res)
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    };
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-};
 
   return (
     <>

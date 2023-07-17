@@ -13,9 +13,11 @@ function App() {
   const [file, setFile] = useState("");
   const [fileContent, setFileContent] = useState("");
 
+  
+
   const selectFile = () => {
     axios
-      .get(`http://localhost:5000/file/:${file.name}`)
+      .get(`http://localhost:5000/files/:${file.name}`)
       .then((res) => {
         console.log(res.data);
         setFileContent(res.data);

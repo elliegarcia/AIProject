@@ -9,23 +9,29 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import GenerateSolutionButton from "./Components/GenerateSolutionButton";
 import Highlighter from "react-highlight-words";
-import Card from '@mui/material/Card';
 
 function App() {
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState("");
   const [fileContent, setFileContent] = useState("");
-  const [file2, setFile2] = useState([]);
+  const [file2, setFile2] = useState("");
   const [fileContent2, setFileContent2] = useState("");
+  const [filename, setFilename] = useState("");
 
-  const savedFile = (filename) => {
+  const getSavedFile = (filename) => {
+    
+    if (filename=="") {return ""}
+    else{
     axios
-      .get(`http://localhost:5000/files/:${filename.name}`)
+      .get(`http://localhost:5000/files/:${filename}`)
       .then((res) => {
-        console.log(res.data);
         setFile(res.data);
       })
       .catch((err) => console.log(err));
+    }
   };
+  console.log("filename-get", filename);
+  console.log(typeof file)
+  
 
   return (
     <div className="App">
@@ -49,11 +55,14 @@ function App() {
                 files={file}
                 setFiles={setFile}
                 setFileContent={setFileContent}
+                filename={filename}
+                setFilename={setFilename}
               />
             </Grid>
 
             <Grid className="GenerateSolution" item xs={5}>
               <GenerateSolutionButton />
+              {getSavedFile(filename??"")}
             </Grid>
 
             <Grid className="DomainFile" item xs={10}>
@@ -61,7 +70,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={["loc-0", "loc2"]}
+                    searchWords={["loc-0", "p0"]}
                     autoEscape={true}
                     textToHighlight={fileContent}
                   />

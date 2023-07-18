@@ -3,16 +3,17 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-const FileUpload = ({ files, setFiles, setFileContent }) => {
+const FileUpload = ({ files, setFiles, setFileContent, filename, setFilename }) => {
   const fileInputRef = useRef(null);
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
   const uploadHandler = (event) => {
     const file = event.target.files[0];
-    if (!file) return;
-    file.isUploading = true;
-    setFiles([...files, file]);
+    setFiles(file)
+    //if (!file) return;
+    //file.isUploading = true;
+    //setFiles([...files, file]);
 
     const reader = new FileReader();
 
@@ -20,7 +21,7 @@ const FileUpload = ({ files, setFiles, setFileContent }) => {
       const fileContent = e.target.result;
       // Do something with the file content, such as displaying it in the browser or sending it to a server
       setFileContent(fileContent);
-      console.log(fileContent);
+      //console.log(fileContent);
     };
 
     reader.readAsText(file);
@@ -32,13 +33,16 @@ const FileUpload = ({ files, setFiles, setFileContent }) => {
       .post(`http://localhost:5000/files/:${file.name}`, formData)
       .then((res) => {
         file.isUploading = false;
-        setFiles([...files, file]);
+        setFiles(files);
+        setFilename(file.name);
+        // setFiles([...files, file]);
       })
       .catch((err) => {
         // inform the user
-        console.error(err.files);
+        console.error(err.file);
       });
   };
+  console.log("filename-post", filename)
 
   return (
     <>

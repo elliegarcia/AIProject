@@ -1,12 +1,13 @@
-import React, {useState} from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import "./FileUpload.css";
+import React, { useRef } from "react";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
-const FileUpload = ({ files, setFiles, removeFile }) => {
-  const [fileContent, setFileContent] = useState('');
-
+const FileUpload = ({ files, setFiles, setFileContent }) => {
+  const fileInputRef = useRef(null);
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
   const uploadHandler = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -36,17 +37,20 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
       .catch((err) => {
         // inform the user
         console.error(err.files);
-        removeFile(file.name);
       });
   };
 
   return (
     <>
-      <div className="file-card">
-        <div className="file-inputs">
-          <input type="file" onChange={uploadHandler} />
-        </div>
-        <pre>{fileContent}</pre>
+      <div className="file-inputs">
+        <Button
+          variant="contained"
+          endIcon={<FileUploadIcon />}
+          onClick={handleButtonClick}
+        >
+          Upload File
+        </Button>
+        <input type="file" style={{display:"none"}} ref={fileInputRef} onChange={uploadHandler} />
       </div>
     </>
   );

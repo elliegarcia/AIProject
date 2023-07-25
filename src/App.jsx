@@ -12,11 +12,12 @@ import Highlighter from "react-highlight-words";
 
 function App() {
   const [file, setFile] = useState([]);
-  const [fileContent, setFileContent] = useState("");
   const [filename, setFilename] = useState("");
+  const [fileContent, setFileContent] = useState("");
   const [file2, setFile2] = useState([]);
-  const [fileContent2, setFileContent2] = useState("");
   const [filename2, setFilename2] = useState("");
+  const [fileContent2, setFileContent2] = useState("");
+  
 
   const getSavedFile = (filename) => {
     if (filename==="") {return }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FileUpload from "./FileUpload/FileUpload";
 import axios from "axios";
 import Box from "@mui/material/Box";
@@ -11,27 +11,32 @@ import GenerateSolutionButton from "./Components/GenerateSolutionButton";
 import Highlighter from "react-highlight-words";
 
 function App() {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState([]);
   const [fileContent, setFileContent] = useState("");
-  const [file2, setFile2] = useState("");
-  const [fileContent2, setFileContent2] = useState("");
   const [filename, setFilename] = useState("");
+  const [file2, setFile2] = useState([]);
+  const [fileContent2, setFileContent2] = useState("");
+  const [filename2, setFilename2] = useState("");
 
   const getSavedFile = (filename) => {
-    
-    if (filename=="") {return ""}
+    if (filename==="") {return }
     else{
     axios
       .get(`http://localhost:5000/files/:${filename}`)
       .then((res) => {
         setFile(res.data);
+        console.log("axios-file", file);
       })
       .catch((err) => console.log(err));
     }
   };
-  console.log("filename-get", filename);
-  console.log(typeof file)
-  
+
+  useEffect(() => {
+    getSavedFile(filename);
+  }, [filename]);
+
+  console.log("filename-get", filename)
+  console.log("file-get", file)
 
   return (
     <div className="App">
@@ -54,25 +59,25 @@ function App() {
               <FileUpload
                 files={file}
                 setFiles={setFile}
-                setFileContent={setFileContent}
                 filename={filename}
                 setFilename={setFilename}
+                setFileContent={setFileContent}
               />
             </Grid>
 
             <Grid className="GenerateSolution" item xs={5}>
               <GenerateSolutionButton />
-              {getSavedFile(filename??"")}
             </Grid>
 
             <Grid className="DomainFile" item xs={10}>
               <Box sx={{ boxShadow:1, width: "60%", height: 300, overflow: "auto" }}>
                 <pre>
+                  
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={["loc-0", "p0"]}
+                    searchWords={["loc", "p0"]}
                     autoEscape={true}
-                    textToHighlight={fileContent}
+                    textToHighlight={file.toString()}
                   />
                 </pre>
               </Box>
@@ -87,7 +92,8 @@ function App() {
               <FileUpload
                 files={file2}
                 setFiles={setFile2}
-                setFileContent={setFileContent2}
+                filename={filename2}
+                setFilename={setFilename2}
               />
             </Grid>
             <Grid className="ProblemFile" item xs={10}>
@@ -97,7 +103,7 @@ function App() {
                     highlightClassName="YourHighlightClass"
                     searchWords={["loc-0", "loc2"]}
                     autoEscape={true}
-                    textToHighlight={fileContent2}
+                    textToHighlight={file2.toString()}
                   />
                 </pre>
               </Box>

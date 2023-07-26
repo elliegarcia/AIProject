@@ -7,6 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Button from '@mui/material/Button';
 import GenerateSolutionButton from "./Components/GenerateSolutionButton";
 import Highlighter from "react-highlight-words";
 import DataListComponent from "./Components/DataListComponent";
@@ -60,6 +61,12 @@ function App() {
 
   const [showList, setShowList] = useState(false);
 
+  const [selectedItem, setSelectedItem] = useState(null);
+  const handleListItemClick = (item) => {
+    // Handle the selected item in the main app
+    setSelectedItem(item);
+  };
+
   return (
     <div className="App">
       <AppBar position="static">
@@ -96,7 +103,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={["person-at p0"]}
+                    searchWords={[selectedItem]}
                     autoEscape={true}
                     textToHighlight={file.toString()}
                   />
@@ -127,7 +134,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={["person-at p0"]}
+                    searchWords={[selectedItem]}
                     autoEscape={true}
                     textToHighlight={file2.toString()}
                   />
@@ -139,7 +146,17 @@ function App() {
               <div style={{ marginBottom: "15px" }}>
                 <GenerateSolutionButton setShowList={setShowList} />
               </div>
-              {showList && <DataListComponent />}
+              <Box style={{marginBottom:"15px"}}
+                sx={{
+                  boxShadow: 1,
+                  width: "100%",
+                  height: 1000,
+                  overflow: "auto",
+                }}
+              >
+              {showList && <DataListComponent onListItemClick={handleListItemClick}/>}
+              </Box>
+              <Button variant="contained">submit changes</Button>
             </Grid>
           </Grid>
         </Box>

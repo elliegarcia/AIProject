@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, List, ListItem, ListItemText, Typography } from "@mui/material";
 import axios from "axios";
 
-const DataListComponent = () => {
+const DataListComponent = ({onListItemClick}) => {
   const jsonData = {
     "solvable": "false",
     "repairs": [
@@ -86,15 +86,19 @@ const DataListComponent = () => {
     });
   };
 
+  const handleItemClick = (item) => {
+    onListItemClick(item);
+  }
+
   return (
     <div>
-        <Typography variant="body1">This problem is not solvable until the following changes are made</Typography>
+        <Typography variant="h6">This problem is not solvable until the following changes are made</Typography>
         <Button variant="outlined">Accept All Changes</Button>
     <List>
       {jsonData.repairs.map((repair) =>
         repair.predicates.map((predicate) =>
           repair.objects.map((object) => (
-            <ListItem key={`${repair.id}_${predicate}_${object}`}>
+            <ListItem key={`${repair.id}_${predicate}_${object}`} onClick={() => handleItemClick(`${predicate} ${object}`)}>
               <ListItemText primary={`${predicate} ${object}`} />
               <ButtonGroup variant="text">
               <Button
@@ -102,7 +106,6 @@ const DataListComponent = () => {
               >
                 Accept Change
               </Button>
-              <Button>Ignore</Button>
               </ButtonGroup>
             </ListItem>
           ))

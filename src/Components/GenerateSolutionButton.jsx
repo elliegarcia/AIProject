@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 
-export default function GenerateSolutionButton() {
+export default function GenerateSolutionButton({setShowList}) {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const timer = React.useRef();
@@ -25,6 +25,7 @@ export default function GenerateSolutionButton() {
       timer.current = window.setTimeout(() => {
         setSuccess(true);
         setLoading(false);
+        setShowList(true);
       }, 2000);
     }
   };

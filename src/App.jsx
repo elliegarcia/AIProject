@@ -67,6 +67,14 @@ function App() {
     setSelectedItem(item);
   };
 
+  const [originalString, setOriginalString] = useState(file.toString());
+  const handleAcceptChange = (acceptedChange) => {
+    // Update the main app's state by removing the accepted change from the original string
+    setOriginalString((prevString) =>
+      prevString.replace(acceptedChange, "").trim()
+    );
+  };
+
   return (
     <div className="App">
       <AppBar position="static">
@@ -154,7 +162,7 @@ function App() {
                   overflow: "auto",
                 }}
               >
-              {showList && <DataListComponent onListItemClick={handleListItemClick}/>}
+              {showList && <DataListComponent onListItemClick={handleListItemClick} onAcceptChange={handleAcceptChange}/>}
               </Box>
               <Button variant="contained">submit changes</Button>
             </Grid>

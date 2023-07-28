@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, List, ListItem, ListItemText, Typography } from "@mui/material";
 import axios from "axios";
 
-const DataListComponent = ({onListItemClick}) => {
+const DataListComponent = ({onListItemClick, onAcceptChange}) => {
   const jsonData = {
     "solvable": "false",
     "repairs": [
@@ -102,7 +102,7 @@ const DataListComponent = ({onListItemClick}) => {
               <ListItemText primary={`${predicate} ${object}`} />
               <ButtonGroup variant="text">
               <Button
-                onClick={() => handleAcceptChange(repair.id, predicate, object)}
+                onClick={() => onAcceptChange(`${predicate} ${object}`)}
               >
                 Accept Change
               </Button>

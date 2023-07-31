@@ -62,17 +62,17 @@ function App() {
   const [showList, setShowList] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleListItemClick = (item) => {
+  const handleListItemClick = (item, repair) => {
     // Handle the selected item in the main app
-    setSelectedItem(item);
+     setSelectedItem(item);
   };
-
+  console.log("selectedItem", selectedItem)
   const [originalString, setOriginalString] = useState(file.toString());
   const handleAcceptChange = (acceptedChange) => {
     // Update the main app's state by removing the accepted change from the original string
-    setOriginalString((prevString) =>
-      prevString.replace(acceptedChange, "").trim()
-    );
+    // setOriginalString((prevString) =>
+    //   prevString.replace(acceptedChange, "").trim()
+    // );
   };
 
   return (
@@ -111,7 +111,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={[selectedItem]}
+                    searchWords={selectedItem? selectedItem : [""]}
                     autoEscape={true}
                     textToHighlight={file.toString()}
                   />
@@ -142,7 +142,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={[selectedItem]}
+                    searchWords={selectedItem? selectedItem : [""]}
                     autoEscape={true}
                     textToHighlight={file2.toString()}
                   />

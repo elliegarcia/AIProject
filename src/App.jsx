@@ -7,7 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import GenerateSolutionButton from "./Components/GenerateSolutionButton";
 import Highlighter from "react-highlight-words";
 import DataListComponent from "./Components/DataListComponent";
@@ -62,18 +62,37 @@ function App() {
   const [showList, setShowList] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const handleListItemClick = (item, repair) => {
+  const handleListItemClick = (item) => {
     // Handle the selected item in the main app
-     setSelectedItem(item);
+    setSelectedItem(item);
   };
-  console.log("selectedItem", selectedItem)
-  const [originalString, setOriginalString] = useState(file.toString());
+
+  const [originalString, setOriginalString] = useState(file2.toString());
+  const [updatedString, setUpdatedString] = useState('');
+  useEffect(() => {
+    setOriginalString(file2.toString());
+  }, [file2]);
+  console.log("OG String", originalString)
+
   const handleAcceptChange = (acceptedChange) => {
-    // Update the main app's state by removing the accepted change from the original string
-    // setOriginalString((prevString) =>
-    //   prevString.replace(acceptedChange, "").trim()
+    let updatedString = originalString;
+
+    acceptedChange.forEach((change) => {
+      console.log(change)
+      updatedString = updatedString.replace(change, "").trim();
+    });
+    
+    setUpdatedString(() => updatedString);
+        // Update the main app's state by removing the accepted change from the original string
+    //  setOriginalString((prevString) =>
+    //  prevString.replace(acceptedChange, "").trim()
     // );
+    
   };
+  // useEffect(() => {
+  //   setOriginalString(updatedString); 
+  // }, [updatedString]);
+  console.log("currentString", updatedString);
 
   return (
     <div className="App">
@@ -111,7 +130,7 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={selectedItem? selectedItem : [""]}
+                    searchWords={selectedItem ? selectedItem : [""]}
                     autoEscape={true}
                     textToHighlight={file.toString()}
                   />
@@ -142,9 +161,11 @@ function App() {
                 <pre>
                   <Highlighter
                     highlightClassName="YourHighlightClass"
-                    searchWords={selectedItem? selectedItem : [""]}
+                    searchWords={selectedItem ? selectedItem : [""]}
                     autoEscape={true}
-                    textToHighlight={file2.toString()}
+                    textToHighlight={
+                      updatedString ? updatedString : file2.toString()
+                    }
                   />
                 </pre>
               </Box>
@@ -154,7 +175,8 @@ function App() {
               <div style={{ marginBottom: "15px" }}>
                 <GenerateSolutionButton setShowList={setShowList} />
               </div>
-              <Box style={{marginBottom:"15px"}}
+              <Box
+                style={{ marginBottom: "15px" }}
                 sx={{
                   boxShadow: 1,
                   width: "100%",
@@ -162,7 +184,12 @@ function App() {
                   overflow: "auto",
                 }}
               >
-              {showList && <DataListComponent onListItemClick={handleListItemClick} onAcceptChange={handleAcceptChange}/>}
+                {showList && (
+                  <DataListComponent
+                    onListItemClick={handleListItemClick}
+                    onAcceptChange={handleAcceptChange}
+                  />
+                )}
               </Box>
               <Button variant="contained">submit changes</Button>
             </Grid>

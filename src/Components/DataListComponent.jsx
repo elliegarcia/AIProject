@@ -7,7 +7,6 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 
 const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
   const jsonData = {
@@ -90,60 +89,64 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
       {
         id: "Repair_9_10_12",
         highlights: [
-          "person-at(p0, loc-0-0)",
-          "person-at(p0, loc-1-0)",
-          "person-at(p0, loc-1-1)",
-          "person-at(p0, loc-1-2)",
-          "person-at(p0, loc-1-3)",
-          "person-at(p0, loc-2-0)",
-          "person-at(p0, loc-3-0)",
-          "person-at(p0, loc-3-1)",
-          "person-at(p0, loc-3-2)",
-          "person-at(p0, loc-3-3)",
+          "(person-at p0 loc-0-0)",
+          "(person-at p0 loc-1-0)",
+          "(person-at p0 loc-1-1)",
+          "(person-at p0 loc-1-2)",
+          "(person-at p0 loc-1-3)",
+          "(person-at p0 loc-2-0)",
+          "(person-at p0 loc-3-0)",
+          "(person-at p0 loc-3-1)",
+          "(person-at p0 loc-3-2)",
+          "(person-at p0 loc-3-3)",
 
-          "person-at(p1, loc-0-1)",
-          "person-at(p1, loc-1-0)",
-          "person-at(p1, loc-1-1)",
-          "person-at(p1, loc-1-2)",
-          "person-at(p1, loc-1-3)",
-          "person-at(p1, loc-2-0)",
-          "person-at(p1, loc-3-0)",
-          "person-at(p1, loc-3-1)",
-          "person-at(p1, loc-3-2)",
-          "person-at(p1, loc-3-3)",
+          "(person-at p1 loc-0-1)",
+          "(person-at p1 loc-1-0)",
+          "(person-at p1 loc-1-1)",
+          "(person-at p1 loc-1-2)",
+          "(person-at p1 loc-1-3)",
+          "(person-at p1 loc-2-0)",
+          "(person-at p1 loc-3-0)",
+          "(person-at p1 loc-3-1)",
+          "(person-at p1 loc-3-2)",
+          "(person-at p1 loc-3-3)",
 
-          "person-at(p3, loc-0-3)",
-          "person-at(p3, loc-1-0)",
-          "person-at(p3, loc-1-1)",
-          "person-at(p3, loc-1-2)",
-          "person-at(p3, loc-1-3)",
-          "person-at(p3, loc-2-0)",
-          "person-at(p3, loc-3-0)",
-          "person-at(p3, loc-3-1)",
-          "person-at(p3, loc-3-2)",
-          "person-at(p3, loc-3-3)",
+          "(person-at p3 loc-0-3)",
+          "(person-at p3 loc-1-0)",
+          "(person-at p3 loc-1-1)",
+          "(person-at p3 loc-1-2)",
+          "(person-at p3 loc-1-3)",
+          "(person-at p3 loc-2-0)",
+          "(person-at p3 loc-3-0)",
+          "(person-at p3 loc-3-1)",
+          "(person-at p3 loc-3-2)",
+          "(person-at p3 loc-3-3)",
         ],
       },
     ],
   };
 
-  const handleAcceptChange = (repairId, predicate, object) => {
-    // Implement your logic for accepting changes here
-    const acceptedChange = { repairId, predicate, object };
-    console.log("accepted-change", acceptedChange);
+  // const handleAcceptChange = (repairId, predicate, object) => {
+  //   // Implement your logic for accepting changes here
+  //   const acceptedChange = { repairId, predicate, object };
+  //   console.log("accepted-change", acceptedChange);
 
-    axios
-      .post(`http://localhost:5000/file/:acceptedChanges}`, acceptedChange)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.error("Error sending accepted change:", err);
-      });
-  };
+  //   axios
+  //     .post(`http://localhost:5000/file/:acceptedChanges}`, acceptedChange)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error sending accepted change:", err);
+  //     });
+  // };
 
   const handleItemClick = (item) => {
     onListItemClick(item);
+  };
+
+  const handleAcceptChange = (acceptedChange) => {
+    onAcceptChange(acceptedChange);
   };
 
   return (
@@ -159,12 +162,10 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
               secondary={`${repair.highlights}`}
             />
             <ButtonGroup variant="text">
-              <Button
-                onClick={() => handleItemClick(repair.highlights, repair)}
-              >
+              <Button onClick={() => handleItemClick(repair.highlights)}>
                 view changes
               </Button>
-              <Button onClick={() => onAcceptChange(`${repair.id}`)}>
+              <Button onClick={() => handleAcceptChange(repair.highlights)}>
                 Accept Changes
               </Button>
             </ButtonGroup>

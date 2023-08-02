@@ -6,7 +6,12 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ExpandMore } from "@material-ui/icons";
 
 const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
   const jsonData = {
@@ -126,21 +131,6 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
     ],
   };
 
-  // const handleAcceptChange = (repairId, predicate, object) => {
-  //   // Implement your logic for accepting changes here
-  //   const acceptedChange = { repairId, predicate, object };
-  //   console.log("accepted-change", acceptedChange);
-
-  //   axios
-  //     .post(`http://localhost:5000/file/:acceptedChanges}`, acceptedChange)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.error("Error sending accepted change:", err);
-  //     });
-  // };
-
   const handleItemClick = (item) => {
     onListItemClick(item);
   };
@@ -156,20 +146,38 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
       </Typography>
       <List>
         {jsonData.repairs.map((repair) => (
-          <ListItem key={`${repair.id}`}>
-            <ListItemText
-              primary={`${repair.id}`}
-              secondary={`${repair.highlights}`}
-            />
-            <ButtonGroup variant="text">
-              <Button onClick={() => handleItemClick(repair.highlights)}>
-                view changes
-              </Button>
-              <Button onClick={() => handleAcceptChange(repair.highlights, repair.id)}>
-                Accept Changes
-              </Button>
-            </ButtonGroup>
-          </ListItem>
+          
+            <ListItem key={`${repair.id}`}>
+              <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panella-content"
+                id="panella-header"
+              >
+                <ListItemText
+                  primary={`${repair.id}`}
+                  // secondary={`${repair.highlights}`}
+                />
+              </AccordionSummary>
+              <AccordionDetails>
+                <pre>{repair.highlights.map((highlight)=> `${highlight}\n`)}</pre>
+              </AccordionDetails>
+              </Accordion>
+              <ButtonGroup variant="text">
+                <Button onClick={() => handleItemClick(repair.highlights)}>
+                  view changes
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleAcceptChange(repair.highlights, repair.id)
+                  }
+                >
+                  Accept Changes
+                </Button>
+              </ButtonGroup>
+              
+            </ListItem>
+          
         ))}
       </List>
     </div>

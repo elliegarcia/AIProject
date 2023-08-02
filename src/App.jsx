@@ -12,6 +12,7 @@ import GenerateSolutionButton from "./Components/GenerateSolutionButton";
 import Highlighter from "react-highlight-words";
 import DataListComponent from "./Components/DataListComponent";
 
+
 function App() {
   const [file, setFile] = useState([]);
   const [filename, setFilename] = useState("");
@@ -83,11 +84,20 @@ function App() {
     });
     
     setUpdatedString(() => updatedString);
-        // Update the main app's state by removing the accepted change from the original string
-    //  setOriginalString((prevString) =>
-    //  prevString.replace(acceptedChange, "").trim()
-    // );
+
+    const formData = new FormData();
+    const bufferFile = new Blob([updatedString], {type:"text/plain"})
     
+    formData.append("file", bufferFile, filename);
+    axios
+      .post(`http://localhost:5000/files/:${filename}_edited2`, formData)
+      .then((res) => {
+      })
+      .catch((err) => {
+        // inform the user
+        console.error(err.file);
+      });
+
   };
   // useEffect(() => {
   //   setOriginalString(updatedString); 

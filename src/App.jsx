@@ -75,7 +75,7 @@ function App() {
   }, [file2]);
   console.log("OG String", originalString)
 
-  const handleAcceptChange = (acceptedChange) => {
+  const handleAcceptChange = (acceptedChange, changeID) => {
     let updatedString = originalString;
 
     acceptedChange.forEach((change) => {
@@ -86,11 +86,11 @@ function App() {
     setUpdatedString(() => updatedString);
 
     const formData = new FormData();
-    const bufferFile = new Blob([updatedString], {type:"text/plain"})
+    const updatedFile = new Blob([updatedString], {type:"text/plain"})
     
-    formData.append("file", bufferFile, filename);
+    formData.append("file", updatedFile, filename);
     axios
-      .post(`http://localhost:5000/files/:${filename}_edited2`, formData)
+      .post(`http://localhost:5000/files/:${filename}_${changeID}`, formData)
       .then((res) => {
       })
       .catch((err) => {
@@ -99,9 +99,6 @@ function App() {
       });
 
   };
-  // useEffect(() => {
-  //   setOriginalString(updatedString); 
-  // }, [updatedString]);
   console.log("currentString", updatedString);
 
   return (

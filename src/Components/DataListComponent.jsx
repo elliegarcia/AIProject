@@ -145,8 +145,8 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
     onListItemClick(item);
   };
 
-  const handleAcceptChange = (acceptedChange) => {
-    onAcceptChange(acceptedChange);
+  const handleAcceptChange = (acceptedChange, changeID) => {
+    onAcceptChange(acceptedChange, changeID);
   };
 
   return (
@@ -165,7 +165,7 @@ const DataListComponent = ({ onListItemClick, onAcceptChange }) => {
               <Button onClick={() => handleItemClick(repair.highlights)}>
                 view changes
               </Button>
-              <Button onClick={() => handleAcceptChange(repair.highlights)}>
+              <Button onClick={() => handleAcceptChange(repair.highlights, repair.id)}>
                 Accept Changes
               </Button>
             </ButtonGroup>
